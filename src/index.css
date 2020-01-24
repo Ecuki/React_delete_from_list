@@ -29,7 +29,7 @@ li:nth-child(even) {
 span {
   padding-left: 2%;
   display: inline-block;
-  width: 40%;
+  width: 25%;
 }
 
 .myButton {

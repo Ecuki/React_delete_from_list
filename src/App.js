@@ -10,7 +10,8 @@ class App extends React.Component {
       { id: 3, name: "Joanna", lastName: "Nowak", age: 23 },
       { id: 41, name: "Tomasz", lastName: "Kowalski", age: 35 }
     ],
-    ageSort: false
+    ageSort: false,
+    showFullName: false
   };
   handleDelete = e => {
     let persons = this.state.persons;
@@ -21,20 +22,33 @@ class App extends React.Component {
       persons
     });
   };
-  handleShowAge = () => {
-    const ageSort = this.state.ageSort;
-    this.setState({
-      ageSort: !ageSort
-    });
+  handleShow = e => {
+    const element = e.target.name;
+    console.log(e.target.name);
+    if (element === "ageSort") {
+      this.setState({
+        ageSort: !this.state[element]
+      });
+    } else if (element === "showFullName") {
+      this.setState({
+        showFullName: !this.state[element]
+      });
+    } else {
+      console.log("niepoprwny parametr handleShow");
+    }
   };
   render() {
     return (
       <ul>
         {this.state.persons.map(person => (
           <li key={person.id}>
-            <span key={`span-name-${person.id}`}>
-              {person.name} {person.lastName}
-            </span>
+            <span key={`span-name-${person.id}`}>{person.name}</span>
+
+            {this.state.showFullName ? (
+              <span key={`span-last-name-${person.id}`}>{person.lastName}</span>
+            ) : (
+              ""
+            )}
             {this.state.ageSort ? (
               <span key={`span-age-${person.id}`}> {person.age} </span>
             ) : (
@@ -50,8 +64,15 @@ class App extends React.Component {
             </button>
           </li>
         ))}
-        <button className="myButton" onClick={this.handleShowAge}>
+        <button name="ageSort" className="myButton" onClick={this.handleShow}>
           Pokaż wiek
+        </button>
+        <button
+          name="showFullName"
+          className="myButton"
+          onClick={this.handleShow}
+        >
+          Pokaż nazwisko
         </button>
       </ul>
     );
