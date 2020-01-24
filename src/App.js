@@ -2,6 +2,34 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+const Element = props => {
+  const { id, text } = props;
+  return <span key={id}>{text}</span>;
+};
+
+const Person = props => {
+  const { id, name, lastName, age, ageSort, showFullName, deleteUser } = props;
+  return (
+    <li key={id}>
+      <Element key={`name-${id}`} id={id} text={name} />
+      {showFullName ? (
+        <Element key={`last-name-${id}`} id={id} text={lastName} />
+      ) : (
+        ""
+      )}
+      {ageSort ? <Element key={`age-${id}`} id={id} text={age} /> : ""}
+      <button
+        key={`button-${id}`}
+        className="myButton"
+        value={id}
+        onClick={deleteUser}
+      >
+        Usuń
+      </button>
+    </li>
+  );
+};
+
 class App extends React.Component {
   state = {
     persons: [
@@ -41,28 +69,16 @@ class App extends React.Component {
     return (
       <ul>
         {this.state.persons.map(person => (
-          <li key={person.id}>
-            <span key={`span-name-${person.id}`}>{person.name}</span>
-
-            {this.state.showFullName ? (
-              <span key={`span-last-name-${person.id}`}>{person.lastName}</span>
-            ) : (
-              ""
-            )}
-            {this.state.ageSort ? (
-              <span key={`span-age-${person.id}`}> {person.age} </span>
-            ) : (
-              ""
-            )}
-            <button
-              key={`button-${person.id}`}
-              className="myButton"
-              value={person.id}
-              onClick={this.handleDelete}
-            >
-              Usuń
-            </button>
-          </li>
+          <Person
+            key={person.id}
+            id={person.id}
+            name={person.name}
+            lastName={person.lastName}
+            age={person.age}
+            ageSort={this.state.ageSort}
+            showFullName={this.state.showFullName}
+            deleteUser={this.handleDelete}
+          />
         ))}
         <button name="ageSort" className="myButton" onClick={this.handleShow}>
           Pokaż wiek
