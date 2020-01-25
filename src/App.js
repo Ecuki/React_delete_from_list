@@ -9,7 +9,7 @@ const Element = props => {
 
 const Person = props => {
   const { id, name, lastName, age, ageSort, showFullName, deleteUser } = props;
-  return (
+  const person = (
     <li key={id}>
       <Element key={`name-${id}`} id={id} text={name} />
       {showFullName ? (
@@ -28,6 +28,7 @@ const Person = props => {
       </button>
     </li>
   );
+  return <>{person}</>;
 };
 
 class App extends React.Component {
@@ -39,13 +40,12 @@ class App extends React.Component {
       { id: 41, name: "Tomasz", lastName: "Kowalski", age: 35 }
     ],
     ageSort: false,
-    showFullName: false
+    showFullName: true
   };
   handleDelete = e => {
     let persons = this.state.persons;
     const id = e.target.value;
     persons = persons.filter(person => person.id != id);
-    console.log(persons);
     this.setState({
       persons
     });
@@ -66,20 +66,21 @@ class App extends React.Component {
     }
   };
   render() {
+    const persons = this.state.persons.map(person => (
+      <Person
+        key={person.id}
+        id={person.id}
+        name={person.name}
+        lastName={person.lastName}
+        age={person.age}
+        ageSort={this.state.ageSort}
+        showFullName={this.state.showFullName}
+        deleteUser={this.handleDelete}
+      />
+    ));
     return (
       <ul>
-        {this.state.persons.map(person => (
-          <Person
-            key={person.id}
-            id={person.id}
-            name={person.name}
-            lastName={person.lastName}
-            age={person.age}
-            ageSort={this.state.ageSort}
-            showFullName={this.state.showFullName}
-            deleteUser={this.handleDelete}
-          />
-        ))}
+        {persons}
         <button name="ageSort" className="myButton" onClick={this.handleShow}>
           Pokaż wiek
         </button>
